@@ -1,9 +1,11 @@
 # Hyper-Local-Trust-Network
 
 About
+
 Hyper-Local-Trust-Network is a web application focused on building trusted networks within local communities. It aims to facilitate secure communication, real-time updates, and service management among residents, security personnel, and service providers in a community or society. The app provides features such as visitor management, community posts, payment tracking, security alerts, and marketplace services to enhance neighborhood safety and convenience.
 
 Features
+
 Visitor updates and pre-approved entries
 
 Community posts and announcements
@@ -23,6 +25,7 @@ Quick action buttons for helpdesk, QR scanning, home services, and emergencies
 Amenity booking and delivery pre-approval within the community
 
 Technologies Used
+
 HTML, CSS (Tailwind CSS for styling and animations)
 
 JavaScript (vanilla JS for frontend logic and interactivity)
@@ -32,6 +35,7 @@ Phosphor Icons for UI iconography
 LocalStorage for theme persistence (dark mode)
 
 Installation and Setup
+
 To run this app locally:
 
 bash
@@ -47,7 +51,9 @@ cd Hyper-Local-Trust-Network
 python3 -m http.server
 
 # Open http://localhost:8000 in your web browser
+
 Usage
+
 Use the search bar and tabs for visitor update and community posts filtering.
 
 Navigate through bottom tabs for Payments, Security logs, Marketplace, and Home.
