@@ -1,0 +1,84 @@
+/* Custom scrollbar for a cleaner look */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #888; border-radius: 5px; }
+.dark ::-webkit-scrollbar-track { background: #2d3748; }
+.dark ::-webkit-scrollbar-thumb { background: #6b7280; }
+
+/* Active tab indicator */
+.tab-active {
+    border-bottom-color: #3b82f6; /* blue-500 */
+    color: #3b82f6;
+    font-weight: 600;
+}
+.dark .tab-active {
+    border-bottom-color: #60a5fa; /* blue-400 */
+    color: #60a5fa;
+}
+/* Active nav link style */
+.nav-active {
+    color: #3b82f6; /* blue-500 */
+}
+.dark .nav-active { color: #60a5fa; }
+
+/* Detail View slide-in transition */
+#detail-view { transition: transform 0.3s ease-in-out; }
+#detail-view.show { transform: translateX(0%); }
+
+/* Profile Drawer slide-in transition */
+#profile-drawer { transition: transform 0.3s ease-in-out; }
+#profile-drawer.show { transform: translateX(0%); }
+
+/* Overlay fade-in transition */
+.overlay { transition: opacity 0.3s ease-in-out; }
+
+/* Pull-to-refresh indicator transition */
+#pull-to-refresh-indicator { transition: transform 0.3s ease, opacity 0.3s ease; }
+
+/* Skeleton loading animation */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+.skeleton {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right, transparent 0%, #e5e7eb 50%, transparent 100%);
+    background-size: 2000px 100%;
+}
+.dark .skeleton {
+    background: linear-gradient(to right, transparent 0%, #4a5568 50%, transparent 100%);
+    background-size: 2000px 100%;
+}
+
+/* SOS pulse animation */
+@keyframes pulse-red {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+    }
+}
+.sos-pulse {
+    animation: pulse-red 2s infinite;
+}
+
+/* Security score animation */
+@keyframes security-score-draw {
+    from { stroke-dashoffset: 100; }
+    to { stroke-dashoffset: 25; } /* 100 - 75 (score) */
+}
+.security-score-circle {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: security-score-draw 1.5s 0.5s ease-out forwards;
+}
+
+/* Marketplace favorite button animation */
+.favorite-btn.favorited .ph-heart-fill {
+    animation: heart-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes heart-pop {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}

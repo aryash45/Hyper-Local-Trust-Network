@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" class="light scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Web App</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable dark mode based on a class
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+    <div id="app-container" class="max-w-lg mx-auto bg-white dark:bg-gray-800 min-h-screen font-sans relative pb-24 overflow-x-hidden">
+
+        <div id="pull-to-refresh-indicator" class="absolute top-0 left-0 right-0 flex justify-center items-center pt-4 pb-2 text-gray-500 dark:text-gray-400 opacity-0 z-10">
+            <i class="ph ph-arrow-clockwise text-2xl transition-transform duration-300"></i>
+        </div>
+
+        <div id="main-scroll-area" class="h-screen overflow-y-auto">
+            <header class="p-4 flex items-center justify-between sticky top-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-20 border-b border-gray-100 dark:border-gray-700">
+                <div class="relative flex-grow">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+                    <input type="text" id="search-bar" placeholder="Search..." class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 w-full rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+                <button id="dark-mode-toggle" class="ml-4 text-gray-600 dark:text-gray-300">
+                    <i class="ph ph-moon text-2xl"></i>
+                </button>
+                <button id="profile-drawer-btn" class="ml-4 text-gray-600 dark:text-gray-300">
+                    <i class="ph ph-user-circle text-3xl"></i>
+                </button>
+            </header>
+
+            <main class="p-4 space-y-6">
+                <section class="relative rounded-xl overflow-hidden shadow-lg cursor-pointer">
+                    <img src="https://placehold.co/600x300/e2e8f0/334155?text=Special+Offer" alt="Advertisement" class="w-full h-40 object-cover">
+                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black/60 to-transparent w-full">
+                        <h2 class="text-white font-bold text-lg">Upgrade Your Plan</h2>
+                        <p class="text-white text-sm">Get 50% off on your next upgrade.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-4 text-lg">Quick Actions</h3>
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div class="quick-action-item cursor-pointer" data-action="helpdesk">
+                            <div class="bg-blue-100 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 p-3 rounded-xl inline-block"><i class="ph ph-question text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Helpdesk</span>
+                        </div>
+                        <div class="quick-action-item cursor-pointer" data-action="entries">
+                            <div class="bg-green-100 dark:bg-green-900/50 text-green-500 dark:text-green-400 p-3 rounded-xl inline-block"><i class="ph ph-calendar-plus text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Future Entries</span>
+                        </div>
+                        <div class="quick-action-item cursor-pointer" data-action="scan">
+                            <div class="bg-purple-100 dark:bg-purple-900/50 text-purple-500 dark:text-purple-400 p-3 rounded-xl inline-block"><i class="ph ph-qr-code text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Scan QR</span>
+                        </div>
+                        <div class="quick-action-item relative cursor-pointer" data-action="customize">
+                            <div class="bg-yellow-100 dark:bg-yellow-900/50 text-yellow-500 dark:text-yellow-400 p-3 rounded-xl inline-block"><i class="ph ph-swatches text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Customize</span>
+                            <span class="absolute top-0 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">3</span>
+                        </div>
+                        <div class="quick-action-item cursor-pointer" data-action="services">
+                            <div class="bg-teal-100 dark:bg-teal-900/50 text-teal-500 dark:text-teal-400 p-3 rounded-xl inline-block"><i class="ph ph-wrench text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Services</span>
+                        </div>
+                        <div class="quick-action-item cursor-pointer" data-action="sos">
+                            <div class="bg-red-100 dark:bg-red-900/50 text-red-500 dark:text-red-400 p-3 rounded-xl inline-block"><i class="ph ph-siren text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">SOS</span>
+                        </div>
+                        <div class="quick-action-item cursor-pointer" data-action="clubhouse">
+                            <div class="bg-orange-100 dark:bg-orange-900/50 text-orange-500 dark:text-orange-400 p-3 rounded-xl inline-block"><i class="ph ph-game-controller text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Clubhouse</span>
+                        </div>
+                        <div class="quick-action-item cursor-pointer" data-action="delivery">
+                            <div class="bg-lime-100 dark:bg-lime-900/50 text-lime-500 dark:text-lime-400 p-3 rounded-xl inline-block"><i class="ph ph-package text-2xl"></i></div>
+                            <span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Delivery</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-4 flex items-center justify-between shadow">
+                    <div>
+                        <h4 class="font-bold text-indigo-800 dark:text-indigo-300">New Features!</h4>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400">Check out the latest community updates.</p>
+                    </div>
+                    <button class="bg-indigo-500 text-white text-sm font-semibold px-4 py-2 rounded-lg">Explore</button>
+                </section>
+
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-3 text-lg">Trending Services</h3>
+                    <div class="flex space-x-4 overflow-x-auto pb-4 -mb-4">
+                        <div class="flex-shrink-0 w-40 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow">
+                            <div class="bg-red-100 dark:bg-red-900/50 text-red-500 dark:text-red-400 p-3 rounded-xl inline-block"><i class="ph ph-paint-brush text-2xl"></i></div>
+                            <h4 class="font-semibold mt-2 text-sm text-gray-800 dark:text-gray-200">Home Painting</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Top Rated</p>
+                        </div>
+                        <div class="flex-shrink-0 w-40 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow">
+                            <div class="bg-teal-100 dark:bg-teal-900/50 text-teal-500 dark:text-teal-400 p-3 rounded-xl inline-block"><i class="ph ph-plugs-connected text-2xl"></i></div>
+                            <h4 class="font-semibold mt-2 text-sm text-gray-800 dark:text-gray-200">Electrician</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">24/7 Available</p>
+                        </div>
+                        <div class="flex-shrink-0 w-40 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow">
+                            <div class="bg-sky-100 dark:bg-sky-900/50 text-sky-500 dark:text-sky-400 p-3 rounded-xl inline-block"><i class="ph ph-faucet text-2xl"></i></div>
+                            <h4 class="font-semibold mt-2 text-sm text-gray-800 dark:text-gray-200">Plumbing</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Fast Service</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex border-b border-gray-200 dark:border-gray-700 mb-4">
+                        <button id="tab-visitor" class="flex-1 py-2 text-center font-semibold text-gray-500 dark:text-gray-400 border-b-2 border-transparent transition-colors duration-300 tab-active">Visitor Updates</button>
+                        <button id="tab-community" class="flex-1 py-2 text-center font-semibold text-gray-500 dark:text-gray-400 border-b-2 border-transparent transition-colors duration-300">Community Posts</button>
+                    </div>
+                    <div id="visitor-updates-content" class="space-y-4"></div>
+                    <div id="community-posts-content" class="hidden space-y-4"></div>
+                </section>
+            </main>
+        </div>
+
+        <div id="payments-page" class="hidden h-screen overflow-y-auto">
+            <header class="p-4 flex items-center justify-between sticky top-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-20 border-b border-gray-100 dark:border-gray-700">
+                <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200 mx-auto">Payments</h2>
+            </header>
+            <main class="p-4 space-y-8">
+                <section class="bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 text-white rounded-2xl p-6 shadow-lg">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm opacity-80">Total Outstanding Dues</span>
+                        <i class="ph ph-arrows-clockwise cursor-pointer hover:animate-spin"></i>
+                    </div>
+                    <p class="text-4xl font-bold mb-4">₹1,800</p>
+                    <button class="w-full bg-white/20 backdrop-blur-sm font-semibold py-3 rounded-xl hover:bg-white/30 transition-all">
+                        Pay All Dues
+                    </button>
+                </section>
+
+                <section>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg">History</h3>
+                        <div class="flex space-x-2 text-sm bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                            <button class="payment-filter-btn px-3 py-1 rounded-md" data-filter="all">All</button>
+                            <button class="payment-filter-btn px-3 py-1 rounded-md" data-filter="due">Dues</button>
+                            <button class="payment-filter-btn px-3 py-1 rounded-md" data-filter="paid">Paid</button>
+                        </div>
+                    </div>
+                    <div id="payments-content" class="space-y-4">
+                        </div>
+                </section>
+            </main> 
+        </div>
+
+        <div id="security-page" class="hidden h-screen overflow-y-auto">
+            <header class="p-4 flex items-center justify-between sticky top-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-20 border-b border-gray-100 dark:border-gray-700">
+                <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200 mx-auto">Security</h2>
+            </header>
+            <main class="p-4 space-y-8">
+                <section class="bg-white dark:bg-gray-700 rounded-2xl p-6 shadow-lg flex items-center space-x-6">
+                    <div class="relative w-24 h-24">
+                        <svg class="w-full h-full" viewBox="0 0 36 36">
+                            <path class="text-gray-200 dark:text-gray-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                            <path id="security-score-circle" class="text-green-500 security-score-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="100, 100" stroke-linecap="round"></path>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-2xl font-bold text-gray-800 dark:text-gray-200">75%</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Secure</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Security Score: Good</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Enable Two-Factor Auth to improve your score.</p>
+                        <button class="mt-3 text-sm font-semibold text-blue-500 hover:underline dark:text-blue-400">Improve Score</button>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-3 text-lg">Connected Devices</h3>
+                    <div id="connected-devices-content" class="space-y-3">
+                        </div>
+                </section>
+
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-3 text-lg">Settings</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-700 rounded-xl p-4 flex justify-between items-start">
+                            <div><h4 class="font-semibold text-gray-800 dark:text-gray-200">App Lock</h4><p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Secure app with biometrics.</p></div>
+                            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" value="" class="sr-only peer" checked><div class="w-11 h-6 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div></label>
+                        </div>
+                        <div class="bg-white dark:bg-gray-700 rounded-xl p-4 flex justify-between items-start">
+                            <div><h4 class="font-semibold text-gray-800 dark:text-gray-200">Two-Factor Auth</h4><p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Add an extra layer of security.</p></div>
+                            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" value="" class="sr-only peer"><div class="w-11 h-6 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div></label>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-3 text-lg">Security Logs</h3>
+                    <div id="security-content" class="space-y-4">
+                        </div>
+                </section>
+            </main>
+        </div>
+
+        <div id="marketplace-page" class="hidden h-screen overflow-y-auto">
+            <header class="p-4 flex items-center justify-between sticky top-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-20 border-b border-gray-100 dark:border-gray-700">
+                <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200 mx-auto">Marketplace</h2>
+            </header>
+            <main class="p-4 space-y-6">
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-3 text-lg">Featured Items</h3>
+                    <div class="flex space-x-4 overflow-x-auto pb-4 -mb-4">
+                        <div class="flex-shrink-0 w-64 bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden relative group cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop" alt="Featured Product" class="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 p-3 bg-gradient-to-t from-black/70 to-transparent w-full">
+                                <h4 class="font-bold text-white">Premium Smart Watch</h4>
+                                <p class="text-sm text-gray-200">Like new, with box</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden relative group cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop" alt="Featured Product" class="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 p-3 bg-gradient-to-t from-black/70 to-transparent w-full"><h4 class="font-bold text-white">Running Shoes</h4><p class="text-sm text-gray-200">Size 9, barely used</p></div>
+                        </div>
+                    </div>
+                </section>
+                <div class="relative">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+                    <input type="text" placeholder="Search products..." class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 w-full rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+                <section>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-3 text-lg">Categories</h3>
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div class="marketplace-category cursor-pointer" data-category="electronics"><div class="bg-blue-100 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 p-3 rounded-xl inline-block"><i class="ph ph-device-mobile text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Electronics</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="fashion"><div class="bg-green-100 dark:bg-green-900/50 text-green-500 dark:text-green-400 p-3 rounded-xl inline-block"><i class="ph ph-t-shirt text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Fashion</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="furniture"><div class="bg-purple-100 dark:bg-purple-900/50 text-purple-500 dark:text-purple-400 p-3 rounded-xl inline-block"><i class="ph ph-couch text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Furniture</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="books"><div class="bg-yellow-100 dark:bg-yellow-900/50 text-yellow-500 dark:text-yellow-400 p-3 rounded-xl inline-block"><i class="ph ph-books text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Books</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="decor"><div class="bg-pink-100 dark:bg-pink-900/50 text-pink-500 dark:text-pink-400 p-3 rounded-xl inline-block"><i class="ph ph-lamp text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Home Decor</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="food"><div class="bg-red-100 dark:bg-red-900/50 text-red-500 dark:text-red-400 p-3 rounded-xl inline-block"><i class="ph ph-hamburger text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Foods</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="vehicle"><div class="bg-teal-100 dark:bg-teal-900/50 text-teal-500 dark:text-teal-400 p-3 rounded-xl inline-block"><i class="ph ph-car text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">Vehicle</span></div>
+                        <div class="marketplace-category cursor-pointer" data-category="all"><div class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-500 dark:text-indigo-400 p-3 rounded-xl inline-block"><i class="ph ph-dots-three-outline text-2xl"></i></div><span class="text-xs mt-2 block text-gray-600 dark:text-gray-400">All</span></div>
+                    </div>
+                </section>
+                <section>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg">New Listings</h3>
+                        <a href="#" class="text-sm font-semibold text-blue-500 dark:text-blue-400">See All</a>
+                    </div>
+                    <div id="marketplace-content" class="grid grid-cols-2 gap-4">
+                        </div>
+                </section>
+            </main>
+        </div>
+
+        <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 flex justify-around py-3 z-20">
+            <a href="#" class="nav-link flex flex-col items-center text-gray-500 dark:text-gray-400 nav-active" data-page="home">
+                <i class="ph ph-house text-2xl"></i><span class="text-xs font-semibold">Home</span>
+            </a>
+            <a href="#" class="nav-link flex flex-col items-center text-gray-500 dark:text-gray-400" data-page="payments">
+                <i class="ph ph-credit-card text-2xl"></i><span class="text-xs">Payments</span>
+            </a>
+            <a href="#" class="nav-link flex flex-col items-center text-gray-500 dark:text-gray-400" data-page="marketplace">
+                <i class="ph ph-storefront text-2xl"></i><span class="text-xs">Marketplace</span>
+            </a>
+            <a href="#" class="nav-link flex flex-col items-center text-gray-500 dark:text-gray-400" data-page="security">
+                <i class="ph ph-shield-check text-2xl"></i><span class="text-xs">Security</span>
+            </a>
+            <button id="add-listing-fab" class="absolute -top-8 left-1/2 -translate-x-1/2 bg-blue-500 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 transition-all transform hover:scale-110 hidden">
+                <i class="ph ph-plus text-2xl"></i>
+            </button>
+        </nav>
+
+        <div id="detail-view" class="absolute inset-0 bg-white dark:bg-gray-800 z-30 transform translate-x-full">
+            <header class="p-4 flex items-center sticky top-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm z-10 border-b border-gray-100 dark:border-gray-700">
+                <button id="detail-back-btn"><i class="ph ph-arrow-left text-2xl text-gray-800 dark:text-gray-200"></i></button>
+                <h2 id="detail-title" class="text-lg font-bold text-gray-800 dark:text-gray-200 mx-auto">Details</h2>
+            </header>
+            <div id="detail-content" class="p-4"></div>
+        </div>
+
+        <div id="drawer-overlay" class="overlay fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+        <div id="profile-drawer" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-gray-800 shadow-2xl z-50 transform translate-x-full">
+            <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Profile & Settings</h3>
+                <button id="profile-drawer-close-btn" class="text-gray-500 dark:text-gray-400"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="p-4 space-y-6">
+                <div class="flex items-center space-x-4">
+                    <img src="https://i.pravatar.cc/150?img=3" alt="User Avatar" class="w-16 h-16 rounded-full">
+                    <div>
+                        <h4 class="font-bold text-gray-800 dark:text-gray-200">Piyush</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">View Profile</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <i class="ph ph-gear"></i><span>Account Settings</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <i class="ph ph-bell"></i><span>Notifications</span>
+                    </a>
+                </div>
+                <button id="logout-btn" class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors">Logout</button>
+            </div>
+        </div>
+
+        <div id="helpdesk-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-sm text-center">
+                <i class="ph ph-question text-4xl text-blue-500 dark:text-blue-400 mx-auto"></i>
+                <h3 class="text-xl font-bold mt-4 mb-2 text-gray-800 dark:text-gray-200">Helpdesk</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">How can we assist you today?</p>
+                <div class="space-y-3">
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Contact Support</button>
+                    <button class="w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-500">View FAQs</button>
+                </div>
+                <button class="modal-close-btn mt-6 text-sm text-gray-500 dark:text-gray-400" data-modal="helpdesk-modal">Close</button>
+            </div>
+        </div>
+        <div id="entries-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-sm text-center">
+                <i class="ph ph-calendar-plus text-4xl text-green-500 dark:text-green-400 mx-auto"></i>
+                <h3 class="text-xl font-bold mt-4 mb-2 text-gray-800 dark:text-gray-200">Future Entries</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Schedule or view upcoming visitor entries.</p>
+                <div class="space-y-3">
+                    <button class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Schedule New Entry</button>
+                    <button class="w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-500">View Scheduled</button>
+                </div>
+                <button class="modal-close-btn mt-6 text-sm text-gray-500 dark:text-gray-400" data-modal="entries-modal">Close</button>
+            </div>
+        </div>
+        <!-- QR Code Modal -->
+        <div id="qr-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-sm text-center">
+                <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">Scan for Entry</h3>
+                <img src="Piyush.png" alt="QR Code" class="mx-auto rounded-lg w-52 h-52">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">Show this QR code at the gate for quick entry.</p>
+                <button class="modal-close-btn mt-6 w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg" data-modal="qr-modal">Close</button>
+            </div>
+        </div>
+        <!-- Home Services Modal -->
+        <div id="services-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-sm">
+                <h3 class="text-xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Home Services</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg text-center hover:bg-gray-100 dark:hover:bg-gray-500">
+                        <i class="ph ph-paint-brush text-3xl text-red-500"></i><span class="block mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">Painting</span>
+                    </button>
+                    <button class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg text-center hover:bg-gray-100 dark:hover:bg-gray-500">
+                        <i class="ph ph-plugs-connected text-3xl text-teal-500"></i><span class="block mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">Electrician</span>
+                    </button>
+                    <button class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg text-center hover:bg-gray-100 dark:hover:bg-gray-500">
+                        <i class="ph ph-faucet text-3xl text-sky-500"></i><span class="block mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">Plumbing</span>
+                    </button>
+                    <button class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg text-center hover:bg-gray-100 dark:hover:bg-gray-500">
+                        <i class="ph ph-broom text-3xl text-orange-500"></i><span class="block mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">Cleaning</span>
+                    </button>
+                </div>
+                <button class="modal-close-btn mt-6 w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg" data-modal="services-modal">Close</button>
+            </div>
+        </div>
+        <!-- SOS Modal -->
+        <div id="sos-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-sm text-center">
+                <div id="sos-confirmation-content">
+                    <i class="ph ph-siren text-5xl text-red-500 animate-pulse"></i>
+                    <h3 class="text-xl font-bold mt-4 mb-2 text-gray-800 dark:text-gray-200">Emergency SOS</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">This will immediately alert security. Are you sure you want to proceed?</p>
+                    <button id="confirm-sos-btn" class="w-full bg-red-500 text-white font-bold py-3 rounded-lg hover:bg-red-600 transition-colors sos-pulse">Confirm SOS</button>
+                    <button class="modal-close-btn mt-4 text-sm text-gray-500 dark:text-gray-400" data-modal="sos-modal">Cancel</button>
+                </div>
+                <div id="sos-sent-content" class="hidden">
+                    <i class="ph ph-check-circle text-5xl text-green-500"></i><h3 class="text-xl font-bold mt-4 mb-2 text-gray-800 dark:text-gray-200">Alert Sent</h3><p class="text-gray-600 dark:text-gray-400">Security has been notified and will be in touch shortly.</p><button class="modal-close-btn mt-6 w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg" data-modal="sos-modal">Close</button>
+                </div>
+            </div>
+        </div>
+        <!-- Clubhouse Modal -->
+        <div id="clubhouse-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-md">
+                <div id="clubhouse-booking-content">
+                    <h3 class="text-xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Book an Amenity</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg flex items-center justify-between">
+                            <div class="flex items-center space-x-4"><i class="ph ph-swimming-pool text-3xl text-blue-500"></i>
+                                <div><p class="font-semibold text-gray-800 dark:text-gray-200">Swimming Pool</p><p class="text-sm text-green-600 dark:text-green-400">Available</p></div>
+                            </div><button class="book-amenity-btn bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Book Now</button>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg flex items-center justify-between">
+                            <div class="flex items-center space-x-4"><i class="ph ph-barbell text-3xl text-orange-500"></i>
+                                <div><p class="font-semibold text-gray-800 dark:text-gray-200">Gymnasium</p><p class="text-sm text-green-600 dark:text-green-400">Available</p></div>
+                            </div><button class="book-amenity-btn bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Book Now</button>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg flex items-center justify-between">
+                            <div class="flex items-center space-x-4"><i class="ph ph-confetti text-3xl text-purple-500"></i>
+                                <div><p class="font-semibold text-gray-800 dark:text-gray-200">Party Hall</p><p class="text-sm text-red-600 dark:text-red-400">Booked until 8 PM</p></div>
+                            </div><button class="bg-gray-300 dark:bg-gray-500 text-gray-600 dark:text-gray-300 text-sm font-semibold px-4 py-2 rounded-lg cursor-not-allowed" disabled>Booked</button>
+                        </div>
+                    </div><button class="modal-close-btn mt-6 w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg" data-modal="clubhouse-modal">Close</button>
+                </div>
+                <div id="clubhouse-booked-content" class="hidden text-center"><i class="ph ph-check-circle text-5xl text-green-500"></i><h3 class="text-xl font-bold mt-4 mb-2 text-gray-800 dark:text-gray-200">Booking Confirmed!</h3><p class="text-gray-600 dark:text-gray-400">Your amenity has been booked. You will receive a confirmation shortly.</p><button class="modal-close-btn mt-6 w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg" data-modal="clubhouse-modal">Done</button></div>
+            </div>
+        </div>
+        <!-- Delivery Modal -->
+        <div id="delivery-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4 hidden">
+            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-2xl p-6 w-full max-w-sm">
+                <div id="delivery-form-content">
+                    <h3 class="text-xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Pre-Approve a Delivery</h3>
+                    <form id="delivery-form" class="space-y-4">
+                        <div><label for="delivery-service" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Delivery Service</label><select id="delivery-service" class="w-full bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"><option selected>Choose a service</option><option value="Amazon">Amazon</option><option value="Flipkart">Flipkart</option><option value="Zomato">Zomato</option><option value="Swiggy">Swiggy</option><option value="Other">Other</option></select></div>
+                        <div class="flex items-center"><input id="leave-at-gate" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"><label for="leave-at-gate" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Allow leaving package at the gate</label></div>
+                        <div class="pt-4"><button type="submit" id="approve-delivery-btn" class="w-full bg-blue-500 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-600 transition-colors">Approve Delivery</button><button type="button" class="modal-close-btn mt-3 w-full text-sm text-gray-500 dark:text-gray-400" data-modal="delivery-modal">Cancel</button></div>
+                    </form>
+                </div>
+                <div id="delivery-approved-content" class="hidden text-center">
+                    <i class="ph ph-check-circle text-5xl text-green-500"></i><h3 class="text-xl font-bold mt-4 mb-2 text-gray-800 dark:text-gray-200">Delivery Approved!</h3><p class="text-gray-600 dark:text-gray-400">Security has been notified to expect your delivery.</p><button class="modal-close-btn mt-6 w-full bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg" data-modal="delivery-modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
