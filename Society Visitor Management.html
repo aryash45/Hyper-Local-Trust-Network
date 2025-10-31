@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Society Visitor Management</title>
+  <link rel="stylesheet" href="society-style.css">
+</head>
+<body>
+
+<div class="container" role="main">
+  <header>Society Visitor Management</header>
+
+  <nav class="tabs" role="tablist" aria-label="Guard and Resident panels">
+    <div class="tab active" role="tab" aria-selected="true" tabindex="0" id="guard-tab" aria-controls="guard-panel">Guard Panel</div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="-1" id="resident-tab" aria-controls="resident-panel">Resident Panel</div>
+  </nav>
+
+  <section id="guard-panel" class="panel-container" role="tabpanel" aria-labelledby="guard-tab">
+    <form id="visitor-form" novalidate>
+      <div class="input-wrapper">
+        <label for="visitor-name">Visitor Name</label>
+        <svg fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 8-4 8-4s8 0 8 4"/></svg>
+        <input type="text" id="visitor-name" name="visitorName" placeholder="Enter visitor name" autocomplete="off" required />
+        <div class="error-msg" id="name-error"></div>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="visitor-phone">Phone</label>
+        <svg fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13 1.21.37 2.39.72 3.5a2 2 0 0 1-.45 2.11L9 10a16 16 0 0 0 6 6l1.67-1.67a2 2 0 0 1 2.11-.45c1.11.35 2.3.59 3.5.72a2 2 0 0 1 1.72 2z"/></svg>
+        <input type="tel" id="visitor-phone" name="visitorPhone" placeholder="Enter phone number" pattern="^[0-9]{10,15}$" autocomplete="off" required />
+        <div class="error-msg" id="phone-error"></div>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="purpose-visit">Purpose of Visit</label>
+        <select id="purpose-visit" name="purposeVisit" required>
+          <option value="" disabled selected>Select purpose</option>
+          <option value="Delivery">Delivery</option>
+          <option value="Visitor">Visitor</option>
+          <option value="Service">Service</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="error-msg" id="purpose-error"></div>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="block-select">Block</label>
+        <select id="block-select" name="blockSelect" required>
+          <option value="" disabled selected>Select block</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+        <div class="error-msg" id="block-error"></div>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="flat-no">Flat No.</label>
+        <input type="text" id="flat-no" name="flatNo" placeholder="Enter flat number" pattern="^[0-9A-Za-z- ]{1,6}$" autocomplete="off" required />
+        <div class="error-msg" id="flat-error"></div>
+      </div>
+
+      <button type="submit" id="log-btn" disabled>Log Visitor</button>
+    </form>
+
+    <div id="result-message" role="alert" aria-live="polite"></div>
+  </section>
+
+  <section id="resident-panel" class="panel-container" role="tabpanel" aria-labelledby="resident-tab" hidden>
+    <h2 style="font-weight:700; margin-bottom: 14px;">Pending Visitors</h2>
+    <div id="visitor-list" class="visitor-list">
+      <p class="no-visitors">No pending visitors</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  &copy; 2025 Society Visitor Management
+</footer>
+
+<script src="society-script.js" defer></script>
+
+</body>
+</html>
